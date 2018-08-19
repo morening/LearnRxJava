@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".example8.Example8Fragment"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/example8_btn_concat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="使用Concat实现"/>
+
+    <Button
+        android:id="@+id/example8_btn_concateager"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="使用ConcatEager实现"/>
+
+    <Button
+        android:id="@+id/example8_btn_merge"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="使用Merge实现"/>
+
+    <Button
+        android:id="@+id/example8_btn_publish"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="使用Publish实现"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/example8_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
