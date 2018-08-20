@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.morening.learn.learnrxjava.example1.Example1Fragment;
 import com.morening.learn.learnrxjava.example10.Example10Activity;
 import com.morening.learn.learnrxjava.example11.Example11Fragment;
+import com.morening.learn.learnrxjava.example12.Example12Fragment;
 import com.morening.learn.learnrxjava.example2.Example2Fragment;
 import com.morening.learn.learnrxjava.example3.Example3Fragment;
 import com.morening.learn.learnrxjava.example4.Example4Fragment;
@@ -49,89 +50,97 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.example1_tv)
     void onClickExample1Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example1Fragment.class.getSimpleName());
+        String next = Example1Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example1Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example1Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example2_tv)
     void onClickExample2Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example2Fragment.class.getSimpleName());
+        String next = Example2Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example2Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example2Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example3_tv)
     void onClickExample3Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example3Fragment.class.getSimpleName());
+        String next = Example3Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example3Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example3Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example4_tv)
     void onClickExample4Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example4Fragment.class.getSimpleName());
+        String next = Example4Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example4Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example4Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example5_tv)
     void onClickExample5Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example5Fragment.class.getSimpleName());
+        String next = Example5Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example5Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example5Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example6_tv)
     void onClickExample6Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example6Fragment.class.getSimpleName());
+        String next = Example6Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example6Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example6Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example7_tv)
     void onClickExample7Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example7Fragment.class.getSimpleName());
+        String next = Example7Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example7Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example7Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
     @OnClick(R.id.example8_tv)
     void onClickExample8Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example8Fragment.class.getSimpleName());
+        String next = Example8Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example8Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example8Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 
@@ -142,14 +151,27 @@ public class MainFragment extends Fragment {
         startActivity(intent);
     }
 
-    @OnClick(R.id.example11_tv_city)
+    @OnClick(R.id.example11_tv)
     void onClickExample11Tv(){
-        Fragment fragment = fm.findFragmentByTag(Example11Fragment.class.getSimpleName());
+        String next = Example11Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
             fragment = new Example11Fragment();
         }
-        ft.replace(R.id.content_container, fragment, Example11Fragment.class.getSimpleName());
-        ft.addToBackStack(this.getClass().getSimpleName());
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
+        ft.commitAllowingStateLoss();
+    }
+
+    @OnClick(R.id.example12_tv_city)
+    void onClickExample12Tv(){
+        String next = Example12Fragment.class.getSimpleName();
+        Fragment fragment = fm.findFragmentByTag(next);
+        if (fragment == null){
+            fragment = new Example12Fragment();
+        }
+        ft.replace(R.id.content_container, fragment, next);
+        ft.addToBackStack(next);
         ft.commitAllowingStateLoss();
     }
 }

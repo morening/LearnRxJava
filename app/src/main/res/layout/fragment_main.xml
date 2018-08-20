@@ -70,10 +70,17 @@
         android:text="10. 屏幕旋转导致 Activity 重建时恢复任务"/>
 
     <TextView
-        android:id="@+id/example11_tv_city"
+        android:id="@+id/example11_tv"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
         android:text="11. 检测网络状态并自动重试请求"/>
+
+    <TextView
+        android:id="@+id/example12_tv_city"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="12. 使用buffer统计点击次数"/>
 
 </LinearLayout>

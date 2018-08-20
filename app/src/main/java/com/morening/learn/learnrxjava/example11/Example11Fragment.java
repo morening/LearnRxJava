@@ -56,7 +56,6 @@ public class Example11Fragment extends Fragment {
 
         locateDisposable = new CompositeDisposable();
         weatherDisposable = new CompositeDisposable();
-
         requestLocate();
 
         return root;
