@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,6 +41,8 @@ public class Example4Fragment extends Fragment {
     @BindView(R.id.example4_rv)
     RecyclerView example4_rv;
 
+    private Unbinder unbinder = null;
+
     private int currentPage = 0;
     private NewsAdapter newsAdapter;
     private List<NewsResultEntity> newsResultEntities = new ArrayList<>();
@@ -50,7 +53,7 @@ public class Example4Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example4, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         initViews();
         
@@ -125,7 +128,7 @@ public class Example4Fragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 }

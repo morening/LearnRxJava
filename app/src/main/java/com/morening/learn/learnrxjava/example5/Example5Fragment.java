@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,6 +32,8 @@ public class Example5Fragment extends Fragment {
 
     private static final String TAG = Example5Fragment.class.getSimpleName();
 
+    private Unbinder unbinder = null;
+
     private CompositeDisposable compositeDisposable = null;
 
     @Override
@@ -38,7 +41,7 @@ public class Example5Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example5, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         compositeDisposable = new CompositeDisposable();
 
@@ -139,5 +142,6 @@ public class Example5Fragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 }

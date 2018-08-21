@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -39,6 +40,8 @@ public class Example3Fragment extends Fragment {
     @BindView(R.id.example3_tv)
     TextView example3_tv;
 
+    private Unbinder unbinder = null;
+
     private PublishSubject<String> publishSubject = null;
     private CompositeDisposable compositeDisposable = null;
 
@@ -47,7 +50,7 @@ public class Example3Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example3, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         publishSubject = publishSubject.create();
         compositeDisposable = new CompositeDisposable();
@@ -119,5 +122,6 @@ public class Example3Fragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 }

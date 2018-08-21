@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,6 +39,8 @@ public class Example2Fragment extends Fragment {
     @BindView(R.id.example2_result_tv)
     TextView example2_result_tv;
 
+    private Unbinder unbinder = null;
+
     private PublishSubject<Double> publishSubject = null;
     private CompositeDisposable compositeDisposable = null;
     private SourceHandler sourceHandler = null;
@@ -47,7 +50,7 @@ public class Example2Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example2, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         compositeDisposable = new CompositeDisposable();
         sourceHandler = new SourceHandler();
@@ -150,6 +153,7 @@ public class Example2Fragment extends Fragment {
         super.onDestroyView();
         sourceHandler.removeCallbacksAndMessages(null);
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 
     private class Data{

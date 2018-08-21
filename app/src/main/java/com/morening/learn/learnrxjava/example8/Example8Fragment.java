@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -45,13 +46,15 @@ public class Example8Fragment extends Fragment {
     @BindView(R.id.example8_rv)
     RecyclerView example8_rv;
 
+    private Unbinder unbinder = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example8, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         compositeDisposable = new CompositeDisposable();
 
@@ -192,5 +195,6 @@ public class Example8Fragment extends Fragment {
         super.onDestroyView();
 
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 }

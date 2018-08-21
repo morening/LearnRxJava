@@ -24,6 +24,7 @@ import com.morening.learn.learnrxjava.example8.Example8Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +32,8 @@ import butterknife.OnClick;
 public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
+
+    private Unbinder unbinder = null;
 
     private FragmentManager fm = null;
     private FragmentTransaction ft = null;
@@ -40,12 +43,18 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         fm = getFragmentManager();
         ft = fm.beginTransaction();
 
         return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @OnClick(R.id.example1_tv)

@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,6 +35,8 @@ public class Example7Fragment extends Fragment {
     @BindView(R.id.example7_btn)
     Button example7_btn;
 
+    private Unbinder unbinder = null;
+
     private CompositeDisposable compositeDisposable = null;
     private PublishSubject<String> userSubject = null;
     private PublishSubject<String> pwdSubject = null;
@@ -43,7 +46,7 @@ public class Example7Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example7, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         compositeDisposable = new CompositeDisposable();
         userSubject = PublishSubject.create();
@@ -98,5 +101,6 @@ public class Example7Fragment extends Fragment {
         super.onDestroyView();
 
         compositeDisposable.clear();
+        unbinder.unbind();
     }
 }

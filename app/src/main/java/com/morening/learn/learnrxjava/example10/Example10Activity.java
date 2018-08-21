@@ -12,6 +12,7 @@ import com.morening.learn.learnrxjava.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observables.ConnectableObservable;
@@ -26,11 +27,13 @@ public class Example10Activity extends Activity implements IHolder {
     @BindView(R.id.example10_tv)
     TextView example10_tv;
 
+    private Unbinder unbinder = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example10);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         compositeDisposable = new CompositeDisposable();
     }

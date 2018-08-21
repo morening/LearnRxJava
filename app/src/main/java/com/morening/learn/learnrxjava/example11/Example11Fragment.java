@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,6 +40,8 @@ public class Example11Fragment extends Fragment {
     @BindView(R.id.example11_tv_temperature)
     TextView example11_tv_temperature;
 
+    private Unbinder unbinder = null;
+
     private String[] cityNames = new String[]{"天津", "北京", "上海"};
 
     private CompositeDisposable locateDisposable = null;
@@ -52,7 +55,7 @@ public class Example11Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_example11, container, false);
-        ButterKnife.bind(this, root);
+        unbinder = ButterKnife.bind(this, root);
 
         locateDisposable = new CompositeDisposable();
         weatherDisposable = new CompositeDisposable();
@@ -160,5 +163,6 @@ public class Example11Fragment extends Fragment {
         super.onDestroyView();
         locateDisposable.clear();
         weatherDisposable.clear();
+        unbinder.unbind();
     }
 }
