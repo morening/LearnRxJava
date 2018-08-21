@@ -3,20 +3,20 @@ package com.morening.learn.learnrxjava.example3;
 
 import android.os.Bundle;
 import android.app.Fragment;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.morening.learn.learnrxjava.R;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -28,7 +28,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +39,11 @@ public class Example3Fragment extends Fragment {
     @BindView(R.id.example3_tv)
     TextView example3_tv;
 
+    @BindView(R.id.example3_et)
+    EditText example3_et;
+
     private Unbinder unbinder = null;
 
-    private PublishSubject<String> publishSubject = null;
     private CompositeDisposable compositeDisposable = null;
 
     @Override
@@ -52,7 +53,6 @@ public class Example3Fragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_example3, container, false);
         unbinder = ButterKnife.bind(this, root);
 
-        publishSubject = publishSubject.create();
         compositeDisposable = new CompositeDisposable();
 
         DisposableObserver<String> disposableObserver = new DisposableObserver<String>() {
@@ -72,20 +72,19 @@ public class Example3Fragment extends Fragment {
             }
         };
 
-        publishSubject.debounce(200, TimeUnit.MILLISECONDS)
-                .filter(new Predicate<String>() {
+        compositeDisposable.add(RxTextView.textChanges(example3_et).debounce(200, TimeUnit.MILLISECONDS)
+                .filter(new Predicate<CharSequence>() {
                     @Override
-                    public boolean test(String s) throws Exception {
-                        return s.length() > 0;
+                    public boolean test(CharSequence cs) throws Exception {
+                        return cs.length() > 0;
                     }
                 })
-                .switchMap(new Function<String, ObservableSource<String>>() {
+                .switchMap(new Function<CharSequence, ObservableSource<String>>() {
                     @Override
-                    public ObservableSource<String> apply(String s) throws Exception {
-                        return getSearchObservable(s);
+                    public ObservableSource<String> apply(CharSequence cs) throws Exception {
+                        return getSearchObservable(String.valueOf(cs));
                     }
-                }).observeOn(AndroidSchedulers.mainThread()).subscribe(disposableObserver);
-        compositeDisposable.add(disposableObserver);
+                }).observeOn(AndroidSchedulers.mainThread()).subscribeWith(disposableObserver));
 
         return root;
     }
@@ -107,15 +106,6 @@ public class Example3Fragment extends Fragment {
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io());
-    }
-
-    @OnTextChanged(R.id.example3_et)
-    void afterTextChanged(Editable s){
-        startSearch(s.toString());
-    }
-
-    void startSearch(String key){
-        publishSubject.onNext(key);
     }
 
     @Override

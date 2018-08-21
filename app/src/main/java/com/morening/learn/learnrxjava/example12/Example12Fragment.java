@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.morening.learn.learnrxjava.R;
-import com.morening.learn.learnrxjava.RxUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,15 +48,14 @@ public class Example12Fragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_example12, container, false);
         unbinder = ButterKnife.bind(this, root);
-
-        RxUtils.onClick(example12_btn)
+        RxView.clicks(example12_btn)
                 .buffer(2, TimeUnit.SECONDS)
                 .flatMap(new Function<List<?>, ObservableSource<?>>() {
                     @Override
                     public ObservableSource<Integer> apply(List<?> objects) throws Exception {
                         return Observable.just(objects.size());
                     }
-                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
