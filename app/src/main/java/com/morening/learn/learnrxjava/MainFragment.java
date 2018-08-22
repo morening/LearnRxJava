@@ -57,100 +57,55 @@ public class MainFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.example1_tv)
-    void onClickExample1Tv(){
-        String next = Example1Fragment.class.getSimpleName();
+    private <T extends Fragment> void onClick(T t){
+        String next = t.getClass().getSimpleName();
         Fragment fragment = fm.findFragmentByTag(next);
         if (fragment == null){
-            fragment = new Example1Fragment();
+            fragment = t;
         }
         ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        ft.addToBackStack(MainFragment.class.getSimpleName());
+        ft.commit();
+    }
+
+    @OnClick(R.id.example1_tv)
+    void onClickExample1Tv(){
+        onClick(new Example1Fragment());
     }
 
     @OnClick(R.id.example2_tv)
     void onClickExample2Tv(){
-        String next = Example2Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example2Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example2Fragment());
     }
 
     @OnClick(R.id.example3_tv)
     void onClickExample3Tv(){
-        String next = Example3Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example3Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example3Fragment());
     }
 
     @OnClick(R.id.example4_tv)
     void onClickExample4Tv(){
-        String next = Example4Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example4Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example4Fragment());
     }
 
     @OnClick(R.id.example5_tv)
     void onClickExample5Tv(){
-        String next = Example5Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example5Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example5Fragment());
     }
 
     @OnClick(R.id.example6_tv)
     void onClickExample6Tv(){
-        String next = Example6Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example6Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example6Fragment());
     }
 
     @OnClick(R.id.example7_tv)
     void onClickExample7Tv(){
-        String next = Example7Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example7Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example7Fragment());
     }
 
     @OnClick(R.id.example8_tv)
     void onClickExample8Tv(){
-        String next = Example8Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example8Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example8Fragment());
     }
 
     @OnClick(R.id.example10_tv)
@@ -162,25 +117,11 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.example11_tv)
     void onClickExample11Tv(){
-        String next = Example11Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example11Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example11Fragment());
     }
 
     @OnClick(R.id.example12_tv_city)
     void onClickExample12Tv(){
-        String next = Example12Fragment.class.getSimpleName();
-        Fragment fragment = fm.findFragmentByTag(next);
-        if (fragment == null){
-            fragment = new Example12Fragment();
-        }
-        ft.replace(R.id.content_container, fragment, next);
-        ft.addToBackStack(next);
-        ft.commitAllowingStateLoss();
+        onClick(new Example12Fragment());
     }
 }
