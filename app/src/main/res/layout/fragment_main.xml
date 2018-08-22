@@ -83,4 +83,10 @@
         android:gravity="center"
         android:text="12. 使用buffer统计点击次数"/>
 
+    <TextView
+        android:id="@+id/example13_tv_city"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="13. Fragment间订阅尝试"/>
 </LinearLayout>
