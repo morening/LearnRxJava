@@ -15,6 +15,7 @@ import com.morening.learn.learnrxjava.example10.Example10Activity;
 import com.morening.learn.learnrxjava.example11.Example11Fragment;
 import com.morening.learn.learnrxjava.example12.Example12Fragment;
 import com.morening.learn.learnrxjava.example13.Example13Fragment;
+import com.morening.learn.learnrxjava.example14.Example14Fragment;
 import com.morening.learn.learnrxjava.example2.Example2Fragment;
 import com.morening.learn.learnrxjava.example3.Example3Fragment;
 import com.morening.learn.learnrxjava.example4.Example4Fragment;
@@ -121,13 +122,18 @@ public class MainFragment extends Fragment {
         onClick(new Example11Fragment());
     }
 
-    @OnClick(R.id.example12_tv_city)
+    @OnClick(R.id.example12_tv)
     void onClickExample12Tv(){
         onClick(new Example12Fragment());
     }
 
-    @OnClick(R.id.example13_tv_city)
+    @OnClick(R.id.example13_tv)
     void onClickExample13Tv(){
         onClick(new Example13Fragment());
+    }
+
+    @OnClick(R.id.example14_tv)
+    void onClickExample14Tv(){
+        onClick(new Example14Fragment());
     }
 }
