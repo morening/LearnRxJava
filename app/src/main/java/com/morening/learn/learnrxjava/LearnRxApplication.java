@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.morening.learn.learnrxjava.example15.db.DaoMaster;
 import com.morening.learn.learnrxjava.example15.db.DaoSession;
+import com.morening.learn.learnrxjava.example15.db.WeatherUpgradeOpenHelper;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -23,7 +24,7 @@ public class LearnRxApplication extends Application {
 
     private void setupExample15DataBase() {
 
-        DaoMaster.DevOpenHelper openHelper = new DaoMaster.DevOpenHelper(this, "example15-db");
+        WeatherUpgradeOpenHelper openHelper = new WeatherUpgradeOpenHelper(this, "example15-db");
         Database db = openHelper.getWritableDb();
         DaoMaster daoMaster = new DaoMaster(db);
         example15DaoSession = daoMaster.newSession();

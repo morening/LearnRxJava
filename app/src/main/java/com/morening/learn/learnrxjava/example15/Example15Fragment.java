@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,8 @@ import com.morening.learn.learnrxjava.R;
 import com.morening.learn.learnrxjava.R2;
 import com.morening.learn.learnrxjava.example15.db.DaoSession;
 import com.morening.learn.learnrxjava.example15.db.DataBean;
-import com.morening.learn.learnrxjava.example15.db.DataBeanDao;
 import com.morening.learn.learnrxjava.example15.db.ForecastBean;
 import com.morening.learn.learnrxjava.example15.db.WeatherBean;
-import com.morening.learn.learnrxjava.example15.db.WeatherBeanDao;
 import com.morening.learn.learnrxjava.example15.db.YesterdayBean;
 import com.morening.learn.learnrxjava.example15.remote.WeatherApi;
 import com.morening.learn.learnrxjava.example15.remote.WeatherEntity;
@@ -68,6 +65,7 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
     private List<WeatherBean> weatherBeans = new ArrayList<>();
     private Example15RecyclerViewAdapter adapter = null;
     private WeatherApi weatherApi = null;
+    private DaoSession daoSession = null;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -83,6 +81,8 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
         example15_rv.setAdapter(adapter);
         example15_rv.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        daoSession = LearnRxApplication.getExample15DaoSession();
+
         weatherApi = new Retrofit.Builder().baseUrl("https://www.sojson.com/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -91,17 +91,68 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        requestWeatherLocal();
+    }
+
+    private void requestWeatherLocal() {
+        example15_pb.setVisibility(View.VISIBLE);
+
+        disposable.add(
+                getRequestWeatherObservableLocal()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(getRequestWeatherObserverLocal())
+        );
+    }
+
+    private Observable<List<WeatherBean>> getRequestWeatherObservableLocal() {
+        List<WeatherBean> weatherBeans = daoSession.getWeatherBeanDao().queryBuilder().list();
+
+        return Observable.just(weatherBeans);
+    }
+
+    private DisposableObserver<List<WeatherBean>> getRequestWeatherObserverLocal(){
+        return new DisposableObserver<List<WeatherBean>>() {
+            @Override
+            public void onNext(List<WeatherBean> weatherBeans) {
+                Example15Fragment.this.weatherBeans.clear();
+                Example15Fragment.this.weatherBeans.addAll(weatherBeans);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                example15_pb.setVisibility(View.GONE);
+            }
+        };
+    }
+
     @OnClick(R.id.example15_btn)
     void onClick(){
         example15_pb.setVisibility(View.VISIBLE);
 
         String city = example15_et.getText().toString().replaceAll(" ", "");
-        requestWeatherFromRemote(city);
+        WeatherBean weatherBean = new WeatherBean();
+        weatherBean.setCity(city);
+        if (weatherBeans.contains(weatherBean)){
+            Toast.makeText(getContext(), "不能重复添加！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        requestWeatherRemote(city);
     }
 
-    private void requestWeatherFromRemote(String city) {
+    private void requestWeatherRemote(String city) {
         disposable.add(
-                getWeatherObservableRemote(city).flatMap(new Function<WeatherEntity, ObservableSource<WeatherEntity>>() {
+                getRequestWeatherObservableRemote(city).flatMap(new Function<WeatherEntity, ObservableSource<WeatherEntity>>() {
                     @Override
                     public ObservableSource<WeatherEntity> apply(WeatherEntity weatherEntity) throws Exception {
                         if (weatherEntity.getStatus() != 200){
@@ -112,38 +163,46 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
                 }).doOnNext(new Consumer<WeatherEntity>() {
                     @Override
                     public void accept(WeatherEntity weatherEntity) throws Exception {
-                        deleteWeatherInfoFromDb(weatherEntity);
-                        saveWeatherInfoToDb(weatherEntity);
+                        saveWeatherLocal(weatherEntity);
                     }
-                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe());
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(getRequestWeatherObserverRemote())
+        );
     }
 
-    private void deleteWeatherInfoFromDb(WeatherEntity weatherEntity){
-        DaoSession daoSession = LearnRxApplication.getExample15DaoSession();
-
-        List<WeatherBean> weatherBeans = daoSession.getWeatherBeanDao().queryBuilder().where(WeatherBeanDao.Properties.City.eq(weatherEntity.getCity())).list();
-        if (weatherBeans != null && weatherBeans.size() > 0){
-            WeatherBean weatherBean = weatherBeans.get(0);
-            daoSession.getForecastBeanDao().deleteInTx(weatherBean.getData().getForecast());
-            daoSession.getYesterdayBeanDao().delete(weatherBean.getData().getYesterday());
-            daoSession.getDataBeanDao().delete(weatherBean.getData());
-            daoSession.getWeatherBeanDao().delete(weatherBean);
-        }
+    private Observable<WeatherEntity> getRequestWeatherObservableRemote(String city){
+        return weatherApi.getWeather(city);
     }
 
-    private void saveWeatherInfoToDb(WeatherEntity weatherEntity) {
+    private DisposableObserver<WeatherEntity> getRequestWeatherObserverRemote(){
+        return new DisposableObserver<WeatherEntity>() {
+            @Override
+            public void onNext(WeatherEntity value) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(Example15Fragment.this.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private void saveWeatherLocal(WeatherEntity weatherEntity) {
         disposable.add(Observable.just(weatherEntity).flatMap(new Function<WeatherEntity, ObservableSource<WeatherBean>>() {
             @Override
             public ObservableSource<WeatherBean> apply(WeatherEntity entity) throws Exception {
 
-                return getWeatherBeanObservable(entity);
+                return weatherEntity2Bean(entity);
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(getDisposableObserver()));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(getSaveWeatherObserverLocal()));
     }
 
-    private Observable<WeatherBean> getWeatherBeanObservable(WeatherEntity weatherEntity){
-        DaoSession daoSession = LearnRxApplication.getExample15DaoSession();
-
+    private Observable<WeatherBean> weatherEntity2Bean(WeatherEntity weatherEntity){
         YesterdayBean yesterdayBean = DBUtils.yesterdayEntity2Bean(weatherEntity.getData().getYesterday());
         long yesterdayId = daoSession.getYesterdayBeanDao().insert(yesterdayBean);
 
@@ -165,7 +224,7 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
         return Observable.just(weatherBean);
     }
 
-    private DisposableObserver<WeatherBean> getDisposableObserver(){
+    private DisposableObserver<WeatherBean> getSaveWeatherObserverLocal(){
         return new DisposableObserver<WeatherBean>() {
             @Override
             public void onNext(WeatherBean bean) {
@@ -188,10 +247,6 @@ public class Example15Fragment extends Fragment implements OnItemClickListener{
 
             }
         };
-    }
-
-    private Observable<WeatherEntity> getWeatherObservableRemote(String city){
-        return weatherApi.getWeather(city);
     }
 
     @Override
